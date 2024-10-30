@@ -2,12 +2,14 @@ import { createBrowserRouter } from "react-router-dom"
 import Layout from "../pages/Layout"
 import Movies from "../pages/Movies"
 import MoviesSingle from "../pages/MoviesSingle"
+import Profile from "../pages/Profile"
+import Auth from "../pages/Auth"
 
 
 export const router = createBrowserRouter([
   {
-    path: '/auth',
-    element: <h1 className={'h-screen'}>auth</h1>
+    path: 'auth',
+    element: <Auth/>
   },
   {
     path: '/',
@@ -20,6 +22,10 @@ export const router = createBrowserRouter([
       {
         path: 'movie/:id?',
         element: <MoviesSingle/>
+      },
+      {
+        path: 'profile',
+        element: <Profile/>
       },
     ]
   }

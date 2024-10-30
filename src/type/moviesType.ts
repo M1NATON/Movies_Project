@@ -25,6 +25,12 @@ export interface Movie {
   poster: {
     url: string
   }
+  persons: [{
+    name: string
+    id: number
+    photo: string
+    profession: string
+  }]
 }
 
 export interface MoviesType {

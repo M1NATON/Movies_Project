@@ -18,7 +18,7 @@ const MovieCard:React.FC<Props> = ({title, image, id}) => {
     <Card
       isFooterBlurred
       radius="lg"
-      className="border-none w-fit mx-auto"
+      className="border-none w-fit"
     >
       <Image
         alt="Woman listing to music"

@@ -1,16 +1,17 @@
 import { Action, configureStore, ThunkAction } from "@reduxjs/toolkit"
 import { api } from "./services/api"
 import { moviesApi } from "./services/moviesApi"
-
+import user from './slices/UserSlice'
+import { listenerMiddleware } from "../features/middleware"
 export const store = configureStore({
   reducer: {
     [api.reducerPath]: api.reducer,
     [moviesApi.reducerPath]: moviesApi.reducer,
-
+    user
   },
   middleware: getDefaultMiddleware => {
     return getDefaultMiddleware().concat(api.middleware, moviesApi.middleware)
-    // .prepend(listenerMiddleware.middleware)
+    .prepend(listenerMiddleware.middleware)
   },
 })
 

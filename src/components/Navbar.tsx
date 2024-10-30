@@ -1,32 +1,30 @@
 import React, { useContext } from "react"
 import {
+  Button,
   Navbar as NavbarNext,
   NavbarContent,
-  NavbarItem,
+  NavbarItem
 } from "@nextui-org/react"
 import { Link, NavLink } from "react-router-dom"
 import { FaRegMoon, FaRegSun } from "react-icons/fa"
 import { ThemeContext } from "../context/ThemeProvider"
+import { useSelector } from "react-redux"
+import { selectIsAuthenticated } from "../app/slices/UserSlice"
 
 
 
 const Navbar = () => {
 
   const { theme, toggleTheme } = useContext(ThemeContext)
-
+  const auth = useSelector(selectIsAuthenticated)
 
   return (
-    <NavbarNext className={'mx-auto w-fit'}>
+    <NavbarNext className={'mx-auto w-full'}>
       <NavbarContent
         id="sidebar"
-        className="hidden sm:flex gap-10 "
+        className="hidden w-fit mx-auto items-center sm:flex gap-10 "
         justify="center"
       >
-        <NavbarItem>
-          <NavLink to="/" className={"text-2xl"}>
-            Новые резилы
-          </NavLink>
-        </NavbarItem>
         <NavbarItem>
           <NavLink to={"/movies/1"} className={"text-2xl"}>
             Фильмы
@@ -38,9 +36,20 @@ const Navbar = () => {
           </NavLink>
         </NavbarItem>
         <NavbarItem>
-          <NavLink to={"/profile"} className={"text-2xl"}>
-            Профиль
-          </NavLink>
+          {
+            auth ? (
+              <NavLink to={"/profile"} className={"text-2xl"}>
+                Профиль
+              </NavLink>
+            ) : (
+              <NavLink to={"/auth"} className={"text-2xl"}>
+                <Button>
+
+                  Войти
+                </Button>
+              </NavLink>
+            )
+          }
         </NavbarItem>
         <NavbarItem
           className={"lg:flex text-3xl cursor-pointer"}

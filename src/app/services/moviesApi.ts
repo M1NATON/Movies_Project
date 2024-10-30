@@ -4,7 +4,7 @@ import { Movie, MoviesType } from "../../type/moviesType"
 
 
 
-const apiKinopoisk = '29Q43VM-YPMM0AP-PAXZ3RM-GNYZM8X'
+const apiKinopoisk = '40K1TB2-NY0MFEJ-JHS83AY-AK27YYB'
 
 
 //40K1TB2-NY0MFEJ-JHS83AY-AK27YYB
@@ -86,6 +86,32 @@ export const moviesApi = createApi({
             "X-API-KEY": apiKinopoisk,
           },
         }
+      },
+    }),
+
+    myMovies: builder.query<MoviesType, { id?: number[],  page: number, }>({
+      query: ({ id,page, }) => {
+        const params: URLSearchParams = new URLSearchParams({
+          page: `${page}`,
+          limit: "12",
+          selectFields: "",
+          notNullFields: "name",
+          sortField: "rating.kp",
+          sortType: "-1",
+          type: "",
+        })
+
+        if (id && id.length > 0) {
+          id.forEach(y => params.append("id", y.toString()))
+          return {
+            url: `/v1.4/movie?${params.toString()}&notNullFields=poster.url`,
+            headers: {
+              "X-API-KEY": apiKinopoisk,
+            },
+          }
+        }
+
+
       },
     }),
 
