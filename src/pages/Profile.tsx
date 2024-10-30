@@ -32,7 +32,7 @@ const Profile = () => {
 
   const { data: myMoviesData, status, refetch } = moviesApi.useMyMoviesQuery({
     id: myMovieId,
-    page: 1,
+    page: 2,
   })
   useEffect(() => {
     refetch();
