@@ -4,7 +4,7 @@ export function getYears() {
   const years = []
 
   for (let year = currentYear; year >= startYear; year--) {
-    years.push({ name: year, slug: year })
+    years.push({ name: year.toString(), slug: year.toString() })
   }
 
   return years

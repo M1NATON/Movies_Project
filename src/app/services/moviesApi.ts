@@ -54,9 +54,8 @@ export const moviesApi = createApi({
       }),
     }),
 
-
-    filterMovies: builder.query<MoviesType, { year?: number[], movie?: string,  page: number, genres?: string[]; countries?: string[]}>({
-      query: ({ year,page, genres, countries, movie }) => {
+    filterMovies: builder.query<MoviesType, { year?: number[], movie?: string, type?: string[],  page: number, genres?: string[]; countries?: string[]}>({
+      query: ({ year,page, genres, countries, movie, type }) => {
         const params: URLSearchParams = new URLSearchParams({
           page: `${page}`,
           limit: "12",
@@ -64,13 +63,17 @@ export const moviesApi = createApi({
           notNullFields: "name",
           sortField: "rating.kp",
           sortType: "-1",
-          type: "",
           query: movie || ''
         })
 
         if (year && year.length > 0) {
           year.forEach(y => params.append("year", y.toString()))
         }
+
+        if (type && type.length > 0) {
+          type.forEach(y => params.append("type", y.toString()))
+        }
+
 
         if (genres && genres.length > 0) {
           genres.forEach(genre => params.append("genres.name", genre))
@@ -103,15 +106,13 @@ export const moviesApi = createApi({
 
         if (id && id.length > 0) {
           id.forEach(y => params.append("id", y.toString()))
-          return {
-            url: `/v1.4/movie?${params.toString()}&notNullFields=poster.url`,
-            headers: {
-              "X-API-KEY": apiKinopoisk,
-            },
-          }
         }
-
-
+        return {
+          url: `/v1.4/movie?${params.toString()}&notNullFields=poster.url`,
+          headers: {
+            "X-API-KEY": apiKinopoisk,
+          },
+        }
       },
     }),
 

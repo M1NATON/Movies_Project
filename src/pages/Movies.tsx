@@ -21,9 +21,10 @@ const Movies = () => {
     year: [] as number[],
     genres: [] as string[],
     countries: [] as string[],
+    type: [] as string[]
   })
 
-  const checkboxesRef = useRef<any>([]) // Для управления состоянием чекбоксов
+  const checkboxesRef = useRef<any>([])
   const { data: dataGenres } = moviesApi.useAllGenresQuery()
   const { data: dataTypes } = moviesApi.useAllTypesQuery()
   const { data: dataCountry } = moviesApi.useAllCountryQuery()
@@ -50,7 +51,6 @@ const Movies = () => {
       navigate('/movies/1')
       setCurrentPage('1')
       setPageNumber(1)
-      console.log(12)
       handlerSearch()
     } catch (e) {
       console.log(e)
@@ -84,6 +84,7 @@ const Movies = () => {
       year: [] as number[],
       genres: [] as string[],
       countries: [] as string[],
+      type: [] as string[],
     })
     checkboxesRef.current.forEach((resetFn: any) => resetFn())
   }
@@ -111,6 +112,11 @@ const Movies = () => {
       type: "year",
       title: "Год",
       list: yearsArray,
+    },
+    {
+      type: "type",
+      title: "Тип",
+      list: dataTypes,
     },
   ]
 

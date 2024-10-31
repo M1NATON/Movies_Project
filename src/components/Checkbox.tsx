@@ -12,8 +12,8 @@ import {
 type Props = {
   title: string;
   type: string;
-  list?: [{ name: string; slug: string }];
-  callbackValue: (data: { year?: number[]; genres?: string[]; countries?: string[] }) => void;
+  list?: { name: string; slug: string }[];
+  callbackValue: (data: { year?: number[]; genres?: string[]; type?: string[]; countries?: string[] }) => void;
   resetFilter: (resetFn: () => void) => void;
 };
 
@@ -27,14 +27,13 @@ const Checkbox: React.FC<Props> = ({ list, title, callbackValue, type, resetFilt
   }, [resetFilter]);
 
   useEffect(() => {
-    // Обработка поиска при изменении строки поиска
-    const filtered = list.filter(item =>
-      typeof item.name === 'string' &&  // Проверяем, что name — это строка
+
+    const filtered = list?.filter(item =>
+      typeof item.name === 'string' &&
       item.name.toLowerCase().includes(searchTerm.toLowerCase())
     );
     setFilteredList(filtered);
   }, [searchTerm, list]);
-
   useEffect(() => {
     if (valueCheck.length === 0) {
       switch (type) {
@@ -46,6 +45,9 @@ const Checkbox: React.FC<Props> = ({ list, title, callbackValue, type, resetFilt
           break;
         case "year":
           callbackValue({ year: [] });
+          break;
+        case "type":
+          callbackValue({ type: [] });
           break;
         default:
           break;
@@ -61,11 +63,15 @@ const Checkbox: React.FC<Props> = ({ list, title, callbackValue, type, resetFilt
         case "year":
           callbackValue({ year: valueCheck.map((v) => +v) });
           break;
+        case "type":
+          callbackValue({ type: valueCheck });
+          break;
         default:
           break;
       }
     }
   }, [valueCheck, type, callbackValue]);
+
 
 
   return (
@@ -78,15 +84,15 @@ const Checkbox: React.FC<Props> = ({ list, title, callbackValue, type, resetFilt
               value={valueCheck}
               onValueChange={setValueCheck}
             >
-              {/* Поле для поиска */}
+
               <Input
                 type="search"
                 placeholder="Поиск"
                 value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}  // Обновляем строку поиска
+                onChange={(e) => setSearchTerm(e.target.value)}
               />
 
-              {filteredList.map((item, i) => (
+              {filteredList?.map((item, i) => (
                 <CheckboxNext key={i} value={item.name}>
                   {item.name}
                 </CheckboxNext>
