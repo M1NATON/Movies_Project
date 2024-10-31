@@ -42,7 +42,7 @@ const Register:React.FC<Props> = ({setSelected}) => {
     try {
       await register(data).unwrap()
       setSelected('login')
-    } catch (e) {
+    } catch (e:any) {
       if (e.status === 400) {
         setError('Данные email занят')
       }

@@ -43,7 +43,7 @@ const Login:React.FC<Props> = ({setSelected}) => {
     try {
       await login(data).unwrap()
       navigate("/movies")
-    } catch (e) {
+    } catch (e:any) {
       if(e.status ===401) setError("Неверные данные")
     }
   }
