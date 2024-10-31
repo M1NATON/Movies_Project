@@ -12,9 +12,9 @@ import {
 } from "@nextui-org/react"
 import MovieCard from "../components/MovieCard"
 import { movieStatusApi } from "../app/services/movieStatusApi"
-
 import { useSelector } from "react-redux"
 import { selectUser } from "../app/slices/UserSlice"
+
 
 const MoviesSingle = () => {
   const { id } = useParams()
@@ -27,7 +27,7 @@ const MoviesSingle = () => {
     )
   }
   const statusMovie = getStatusMovie(+id!)
-  const [statusMovieSelect, setStatusMovieSelect] = useState<{currentKey: string}>()
+  const [statusMovieSelect, setStatusMovieSelect] = useState<string | undefined>();
   const [setStatus] = movieStatusApi.useSetStatusMutation()
   const [patchStatus] = movieStatusApi.usePatchStatusMutation()
   const setStatusHandler = async () => {
@@ -35,14 +35,14 @@ const MoviesSingle = () => {
       if (statusMovie) {
         patchStatus({
           id: statusMovie.id!,
-          status: { status: statusMovieSelect?.currentKey!
+          status: { status: statusMovieSelect!
         }
         })
       } else {
         setStatus({
           user_id: user?.id!,
           movie_id: +id!,
-          status: statusMovieSelect?.currentKey!
+          status: statusMovieSelect!
         })
       }
     } catch (e) {
@@ -121,15 +121,18 @@ const MoviesSingle = () => {
             )}
             <Select
               isRequired
-              placeholder="Выбирите статус"
-              className="max-w-xs  w-full"
-              selectedKeys={statusMovieSelect}
-              defaultSelectedKeys={[`${getStatusMovie(+id!)?.status}`]}
-              onSelectionChange={setStatusMovieSelect}
+              placeholder="Выберите статус"
+              className="max-w-xs w-full"
+              selectedKeys={statusMovieSelect ? new Set([statusMovieSelect]) : undefined}
+              defaultSelectedKeys={statusMovie ? new Set([statusMovie.status]) : undefined}
+              onSelectionChange={(keys) => {
+                const selectedKey = Array.from(keys).join("");
+                setStatusMovieSelect(selectedKey);
+              }}
             >
-              <SelectItem key={"PLANED"}>Буду смотреть</SelectItem>
-              <SelectItem key={"WATCHED"}>Просмотрено</SelectItem>
-              <SelectItem key={"DROPPED"}>Брошено</SelectItem>
+              <SelectItem key="PLANED">Буду смотреть</SelectItem>
+              <SelectItem key="WATCHED">Просмотрено</SelectItem>
+              <SelectItem key="DROPPED">Брошено</SelectItem>
             </Select>
           </CardBody>
         </Card>
