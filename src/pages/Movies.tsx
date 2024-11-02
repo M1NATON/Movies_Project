@@ -124,6 +124,7 @@ const Movies = () => {
     return <CircularProgress size={"lg"} aria-label="Loading..." />
   }
 
+
   return (
     <div>
       <div className={"w-full flex gap-20 max-md:flex-col"}>
@@ -148,7 +149,7 @@ const Movies = () => {
                 selectedFilters.countries.length > 0
               }
             />
-            <div className={"flex justify-between items-center"}>
+            <div className={"flex mb-14 justify-between items-center"}>
               <Button
                 className={""}
                 onClick={handlerSearch}
@@ -179,6 +180,8 @@ const Movies = () => {
                 Сбросить
               </Button>
             </div>
+
+
           </div>
           {dataGenres &&
             dataCountry &&

@@ -3,6 +3,7 @@
 export interface Movie {
   name: string
   id: number
+  names: [{name: string}]
   type: string
   year: number
   description: string

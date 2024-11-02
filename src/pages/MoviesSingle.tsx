@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react"
-import { useParams } from "react-router-dom"
+import { useNavigate, useParams } from "react-router-dom"
 import { moviesApi } from "../app/services/moviesApi"
 import {
   Card,
@@ -14,11 +14,13 @@ import MovieCard from "../components/MovieCard"
 import { movieStatusApi } from "../app/services/movieStatusApi"
 import { useSelector } from "react-redux"
 import { selectUser } from "../app/slices/UserSlice"
-
+import MovieSingleInfo from "../components/MovieSingleInfo"
+import MovieSinglePerson from "../components/MovieSinglePerson"
 
 const MoviesSingle = () => {
   const { id } = useParams()
   const user = useSelector(selectUser)
+  const navigate = useNavigate()
   const { data } = moviesApi.useGetByIdMovieQuery(+id!)
   const { data: statusMovieData } = movieStatusApi.useGetStatusQuery()
   const getStatusMovie = (idMovie: number) => {
@@ -27,7 +29,9 @@ const MoviesSingle = () => {
     )
   }
   const statusMovie = getStatusMovie(+id!)
-  const [statusMovieSelect, setStatusMovieSelect] = useState<string | undefined>();
+  const [statusMovieSelect, setStatusMovieSelect] = useState<
+    string | undefined
+  >()
   const [setStatus] = movieStatusApi.useSetStatusMutation()
   const [patchStatus] = movieStatusApi.usePatchStatusMutation()
   const setStatusHandler = async () => {
@@ -35,14 +39,15 @@ const MoviesSingle = () => {
       if (statusMovie) {
         patchStatus({
           id: statusMovie.id!,
-          status: { status: statusMovieSelect!
-        }
+          status: {
+            status: statusMovieSelect!,
+          },
         })
       } else {
         setStatus({
           user_id: user?.id!,
           movie_id: +id!,
-          status: statusMovieSelect!
+          status: statusMovieSelect!,
         })
       }
     } catch (e) {
@@ -50,10 +55,10 @@ const MoviesSingle = () => {
     }
   }
 
-
   useEffect(() => {
     setStatusHandler()
   }, [setStatusMovieSelect, statusMovieSelect])
+
 
   if (!data) return null
   return (
@@ -71,89 +76,36 @@ const MoviesSingle = () => {
 
         <Card className="text-xl w-2/3 h-fit p-6">
           <CardHeader>
-            <h1 className={"text-4xl mb-5"}>{data.name}</h1>
+            <h1 className={"text-4xl mb-5"}>{data.name ? data.name : data.names[0].name}</h1>
           </CardHeader>
           <CardBody>
-            {data.genres.length > 0 && (
-              <p className={"border-b-1 w-fit"}>
-                Жанры:{" "}
-                {data.genres.map((i, idx) => (
-                  <span key={idx}> {i.name}</span>
-                ))}
-              </p>
-            )}
-            {data.countries.length > 0 && (
-              <p className={"border-b-1 w-fit"}>
-                Страна производство:{" "}
-                {data.countries.map((i, idx) => (
-                  <span key={idx}> {i.name}</span>
-                ))}
-              </p>
-            )}
-            {data.ageRating && (
-              <p className={"border-b-1 w-fit mb-4"}>
-                Возрастной рейтинг: {data.ageRating}+
-              </p>
-            )}
-            {data.year && (
-              <p className={"border-b-1 w-fit mb-4"}>Год: {data.year}</p>
-            )}
-            {data.movieLength && (
-              <p className={"border-b-1 w-fit mb-4"}>
-                Продолжительность: {data.movieLength} минут
-              </p>
-            )}
-            {data.type && (
-              <p className={"border-b-1 w-fit mb-4"}>Тип: {data.type}</p>
-            )}
-            {data.rating && (
-              <ul className={"mb-4"}>
-                <li className={"border-b-1 w-fit"}>
-                  Рейтинг кинопоиска: {data.rating.kp.toFixed(1)}/10
-                </li>
-                <li className={"border-b-1 w-fit"}>
-                  Рейтинг imbd: {data.rating.imdb}/10
-                </li>
-              </ul>
-            )}
-            {data.description && (
-              <p className={"mb-5"}>Описание: {data.description}</p>
-            )}
+            <MovieSingleInfo data={data}/>
             <Select
               isRequired
               placeholder="Выберите статус"
-              className="max-w-xs w-full"
-              selectedKeys={statusMovieSelect ? new Set([statusMovieSelect]) : undefined}
-              defaultSelectedKeys={statusMovie ? new Set([statusMovie.status]) : undefined}
-              onSelectionChange={(keys) => {
-                const selectedKey = Array.from(keys).join("");
-                setStatusMovieSelect(selectedKey);
+              className="max-w-xs w-full mb-10"
+              selectedKeys={
+                statusMovieSelect ? new Set([statusMovieSelect]) : undefined
+              }
+              defaultSelectedKeys={
+                statusMovie ? new Set([statusMovie.status]) : undefined
+              }
+              onSelectionChange={keys => {
+                const selectedKey = Array.from(keys).join("")
+                setStatusMovieSelect(selectedKey)
               }}
             >
               <SelectItem key="PLANED">Буду смотреть</SelectItem>
               <SelectItem key="WATCHED">Просмотрено</SelectItem>
               <SelectItem key="DROPPED">Брошено</SelectItem>
             </Select>
+            <MovieSinglePerson data={data}/>
           </CardBody>
         </Card>
       </div>
-      {data.persons && (
-        <div className={"mb-10"}>
-          <h1 className={"text-4xl mb-5"}>Над проектом работали:</h1>
-          <div className="flex flex-wrap items-center mx-auto gap-5">
-            {data.persons.length > 0 &&
-              data.persons.map((item, idx) => (
-                <User
-                  name={item.name}
-                  description={item.profession}
-                  avatarProps={{ src: item.photo }}
-                  key={idx}
-                />
-              ))}
-          </div>
-        </div>
-      )}
-      {data.similarMovies && (
+
+
+      {data.similarMovies.length > 0 && (
         <div className="">
           <h1 className={"text-4xl mb-20"}>Похожие:</h1>
           <div className="flex flex-wrap mx-auto gap-20">

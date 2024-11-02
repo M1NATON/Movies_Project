@@ -21,6 +21,7 @@ export const moviesApi = createApi({
     allMovies: builder.query<MoviesType, number>({
       query: (page: number) => ({
         url: `/v1.4/movie?page=${page}&limit=12&notNullFields=name&notNullFields=poster.url`,
+        method: 'GET',
         headers: {
           "X-API-KEY": apiKinopoisk,
         },
@@ -123,7 +124,19 @@ export const moviesApi = createApi({
           "X-API-KEY": apiKinopoisk,
         },
       }),
+    }),
+
+    randomMovie: builder.query<Movie, void>({
+      query: () => ({
+        url: '/v1.4/movie/random?notNullFields=poster.url',
+        method: "GET",
+        headers: {
+          "X-API-KEY": apiKinopoisk,
+        },
+      }),
     })
+
+
 
   }),
 })
