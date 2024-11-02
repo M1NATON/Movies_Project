@@ -37,7 +37,7 @@ const Profile = () => {
     refetch,
   } = moviesApi.useMyMoviesQuery({
     id: myMovieId,
-    page: currentPage.toString(),
+    page: +currentPage,
   })
 
   useEffect(() => {
@@ -90,7 +90,7 @@ const Profile = () => {
           {myMoviesData?.pages! > 1 && (
             <Pagination
               onChange={pageHandler}
-              total={myMoviesData?.pages}
+              total={myMoviesData?.pages || 1}
               initialPage={pageNumber !== +page ? 1 : pageNumber}
               size={"lg"}
             />
