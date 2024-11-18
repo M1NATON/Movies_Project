@@ -1,5 +1,5 @@
 import React from "react"
-import { Movie } from "../type/moviesType"
+import { Movie } from "../../type/moviesType"
 
 type Props = {
   data: Movie

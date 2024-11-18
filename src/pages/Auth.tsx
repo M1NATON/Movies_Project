@@ -1,7 +1,7 @@
 import React, { useState } from "react"
 import { Card, CardBody, Tab, Tabs } from "@nextui-org/react"
-import Login from "../components/Login"
-import Register from "../components/Register"
+import Login from "../components/auth/Login"
+import Register from "../components/auth/Register"
 
 const Auth = () => {
 

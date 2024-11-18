@@ -1,10 +1,10 @@
 import React, { useState } from "react"
 import { useForm } from "react-hook-form"
-import { userApi } from "../app/services/userApi"
+import { userApi } from "../../app/services/userApi"
 import { Button, Link } from "@nextui-org/react"
-import Input from "./Input"
+import Input from "../Input"
 import { useNavigate } from "react-router-dom"
-import ErrorMessage from "./ErrorMessage"
+import ErrorMessage from "../ErrorMessage"
 
 
 

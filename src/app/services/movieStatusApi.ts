@@ -4,7 +4,10 @@ import { MovieStatusType, receivedMovieStatus } from "../../type/movieStatusType
 
 export const movieStatusApi = api.injectEndpoints({
   endpoints: build => ({
-    setStatus: build.mutation<receivedMovieStatus, receivedMovieStatus>({
+    setStatus: build.mutation<
+      receivedMovieStatus,
+      { status: string,user_id: string, movie_id: number }
+    >({
       query: status => ({
         url: "movie-status",
         method: "POST",
@@ -19,11 +22,21 @@ export const movieStatusApi = api.injectEndpoints({
       }),
     }),
 
-    patchStatus: build.mutation<receivedMovieStatus, {status:{status: string}, id: string}>({
+    patchStatus: build.mutation<
+      receivedMovieStatus,
+      { status: { status: string }; id: string }
+    >({
       query: ({ status, id }) => ({
         url: `movie-status/${id}`,
         method: "PATCH",
         body: status,
+      }),
+    }),
+
+    deleteStatus: build.mutation<void, { id: string }>({
+      query: ({ id }) => ({
+        url: `movie-status/${id}`,
+        method: "DELETE",
       }),
     }),
   }),
