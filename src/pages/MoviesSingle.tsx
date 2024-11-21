@@ -23,8 +23,8 @@ const MoviesSingle = () => {
   if (!data) return null
   return (
     <div>
-      <div className="w-full mx-auto flex mb-16 gap-40 ">
-        <div className="flex w-1/3 flex-col items-center justify-center">
+      <div className="w-full flex-col h-1/2 xl:flex mx-auto mb-16 gap-40 md:flex-row">
+        <div className="flex xl:w-1/3 w-[90%] md:mx-auto  flex-col items-center justify-center">
           <Image
             isBlurred
             src={`${data.poster.url}`}
@@ -33,7 +33,7 @@ const MoviesSingle = () => {
             className="m-5  object-cover"
           />
         </div>
-        <Card className="text-xl w-2/3 h-fit p-6">
+        <Card className="text-sm sm:text-xl w-full xl:w-2/3 h-fit p-6">
           <CardHeader>
             <h1 className={"text-4xl mb-5"}>
               {data.name ? data.name : data.names[0]?.name}

@@ -1,17 +1,19 @@
 import React, { useEffect, useState } from "react"
-import { CircularProgress } from "@nextui-org/react"
+import { Button, CircularProgress, Tooltip } from "@nextui-org/react"
 import { useNavigate } from "react-router-dom"
 import { moviesApi } from "../../app/services/moviesApi"
+import { GiPerspectiveDiceSixFacesRandom } from "react-icons/gi"
 
 const RandomMovieNavbar = () => {
   const navigate = useNavigate()
   const [fetchRandom, setFetchRandom] = useState(false)
-  const { data, status } = moviesApi.useRandomMovieQuery(undefined, {
+  const { data, status, refetch } = moviesApi.useRandomMovieQuery(undefined, {
     skip: !fetchRandom,
   })
   const handlerRandom = async () => {
     try {
       await setFetchRandom(true)
+      refetch()
       if (status === "fulfilled" && data) {
         navigate(`/movie/${data?.id}`)
       }
@@ -21,21 +23,23 @@ const RandomMovieNavbar = () => {
   }
 
   useEffect(() => {
-    if (data?.id) {
+    if (status === "fulfilled" && data) {
       navigate(`/movie/${data?.id}`)
     }
   }, [data])
 
   return (
-    <h1
-      className={"text-2xl cursor-pointer flex gap-2 items-center"}
-      onClick={handlerRandom}
-    >
-      <span>Случайный тайтл</span>
-      {status === "pending" && (
+    <div>
+      {status === "pending" ? (
         <CircularProgress size="sm" aria-label="Loading..." />
+      ): (
+        <GiPerspectiveDiceSixFacesRandom
+          onClick={handlerRandom}
+          className={"cursor-pointer"}
+          size={50}
+        />
       )}
-    </h1>
+    </div>
   )
 }
 

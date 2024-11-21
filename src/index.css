@@ -1,8 +1,12 @@
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-
 #sidebar a.active {
     color: #0063d6;
+}
+
+body, html {
+    overflow-x: hidden;
 }

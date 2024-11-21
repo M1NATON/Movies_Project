@@ -121,14 +121,17 @@ const Movies = () => {
   ]
 
   if (!dataGenres || !dataTypes || !dataCountry) {
-    return <CircularProgress size={"lg"} aria-label="Loading..." />
+    return (
+      <div className={"w-fit mx-auto flex justify-center items-center"}>
+        <CircularProgress size={"lg"} aria-label="Loading..." />
+      </div>
+    )
   }
-
 
   return (
     <div>
       <div className={"w-full flex gap-20 max-md:flex-col"}>
-        <div className="w-1/4 max-md:w-full">
+        <div className="w-1/4 p-5 max-md:w-full">
           <h1 className={"text-4xl mb-14"}>Фильтры</h1>
           <div className={"mb-10"}>
             <Input
@@ -180,8 +183,6 @@ const Movies = () => {
                 Сбросить
               </Button>
             </div>
-
-
           </div>
           {dataGenres &&
             dataCountry &&
@@ -208,11 +209,11 @@ const Movies = () => {
             Сбросить фильтры
           </Button>
         </div>
-        <div className="w-3/4">
+        <div className="w-3/4 mx-auto">
           {dataFilter && status === "fulfilled" ? (
             <>
               <h1 className={"text-4xl mb-14"}>Фильмы</h1>
-              <div className={"flex flex-wrap gap-5"}>
+              <div className={"flex mx-auto flex-wrap gap-5"}>
                 {movie && movie.length > 0 ? (
                   movie.map((movie, index) => (
                     <MovieCard
@@ -228,7 +229,9 @@ const Movies = () => {
               </div>
             </>
           ) : (
-            <CircularProgress size={"lg"} aria-label="Loading..." />
+            <div className={"w-fit mx-auto flex justify-center items-center"}>
+              <CircularProgress size={"lg"} aria-label="Loading..." />
+            </div>
           )}
         </div>
       </div>

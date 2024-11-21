@@ -1,10 +1,8 @@
-import React from "react"
 import {
   Button,
   Modal,
   ModalBody,
   ModalContent,
-  ModalFooter,
   ModalHeader,
   useDisclosure,
 } from "@nextui-org/react"
@@ -24,23 +22,14 @@ const MovieSingleWatch:React.FC<Props> = ({ id, title }) => {
     <div>
       <div className={"mb-10"}>
         <Button onPress={onOpen}>Смотреть фильм</Button>
-        <Modal size={"3xl"} isOpen={isOpen} onOpenChange={onOpenChange}>
+        <Modal placement={'center'} classNames={{base: 'bg-[#18181b]'}} size={"5xl"} isOpen={isOpen} onOpenChange={onOpenChange}>
           <ModalContent>
-            {onClose => (
-              <>
                 <ModalHeader className="flex flex-col gap-1">
-                  <h1>{title}</h1>
+                  <h1 className={'text-white'}>{title}</h1>
                 </ModalHeader>
                 <ModalBody>
                   <KinoboxPlayer kpId={id}/>
                 </ModalBody>
-                <ModalFooter>
-                  <Button color="danger" variant="light" onPress={onClose}>
-                    Close
-                  </Button>
-                </ModalFooter>
-              </>
-            )}
           </ModalContent>
         </Modal>
       </div>

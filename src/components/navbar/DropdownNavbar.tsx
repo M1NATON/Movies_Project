@@ -18,7 +18,7 @@ const DropdownNavbar = () => {
   return (
     <>
       {auth ? (
-        <Dropdown>
+        <Dropdown >
           <DropdownTrigger>
             <Button variant="bordered">Профиль</Button>
           </DropdownTrigger>
