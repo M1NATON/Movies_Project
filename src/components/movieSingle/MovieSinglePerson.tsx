@@ -19,9 +19,9 @@ const MovieSinglePerson = ({ data }: Props) => {
   const { isOpen, onOpen, onOpenChange } = useDisclosure()
 
   return (
-    <div className={"mb-10"}>
+    <div className={"mb-10 text-white"}>
       <Button onPress={onOpen}>Актерский состав</Button>
-      <Modal size={"3xl"} isOpen={isOpen} onOpenChange={onOpenChange}>
+      <Modal size={"3xl"} className={'dark'} isOpen={isOpen} onOpenChange={onOpenChange}>
         <ModalContent>
           {onClose => (
             <>
@@ -34,6 +34,7 @@ const MovieSinglePerson = ({ data }: Props) => {
                     {data.persons.length > 0 &&
                       data.persons.map((item, idx) => (
                         <User
+                          className={'text-white'}
                           name={item.name}
                           description={item.profession}
                           avatarProps={{ src: item.photo }}

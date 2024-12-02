@@ -38,7 +38,7 @@ const MovieSingleSimilar: React.FC<Props> = ({ data }) => {
     <>
       {data && data?.length > 0 && (
         <div className="mb-20">
-          <h1 className={"text-center sm:text-start text-4xl mb-10"}>
+          <h1 className={"text-center sm:text-start text-4xl mb-5"}>
             Похожие
           </h1>
           <div className="slider-container">

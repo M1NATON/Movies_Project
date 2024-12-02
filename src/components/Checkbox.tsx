@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import  { useEffect, useState } from "react"
 import {
   Accordion,
   AccordionItem,
@@ -6,95 +6,83 @@ import {
   Checkbox as CheckboxNext,
   CheckboxGroup,
   Input,
-  ScrollShadow
-} from "@nextui-org/react";
+  ScrollShadow,
+} from "@nextui-org/react"
+import { TypeMovieRu } from "../features/TypeMovieRu"
 
 type Props = {
-  title: string;
-  type: string;
-  list?: { name: string; slug: string }[];
-  callbackValue: (data: { year?: number[]; genres?: string[]; type?: string[]; countries?: string[] }) => void;
-  resetFilter: (resetFn: () => void) => void;
-};
+  title: string
+  type: string
+  list?: { name: string; slug: string }[]
+  callbackValue: (data: {
+    year?: string[]
+    genres?: string[]
+    type?: string[]
+    countries?: string[]
+  }) => void
+  resetFilter: (resetFn: () => void) => void
+  selectedValues: string[]
+}
 
-const Checkbox: React.FC<Props> = ({ list, title, callbackValue, type, resetFilter }) => {
-  const [valueCheck, setValueCheck] = useState<string[]>([]);
-  const [searchTerm, setSearchTerm] = useState<string>("");
-  const [filteredList, setFilteredList] = useState(list);
+const Checkbox: React.FC<Props> = ({
+  list,
+  title,
+  callbackValue,
+  type,
+  resetFilter,
+  selectedValues,
+}) => {
+  const [valueCheck, setValueCheck] = useState<string[]>(selectedValues) // Инициализация значениями из фильтров
+  const [searchTerm, setSearchTerm] = useState<string>("")
+  const [filteredList, setFilteredList] = useState(list)
 
+  // Сброс состояния чекбоксов при сбросе фильтров
   useEffect(() => {
-    resetFilter(() => setValueCheck([]));
-  }, [resetFilter]);
+    resetFilter(() => setValueCheck([]))
+  }, [resetFilter])
 
+  // Фильтрация списка чекбоксов по поисковому запросу
   useEffect(() => {
+    const filtered = list?.filter(
+      item =>
+        typeof item.name === "string" &&
+        item.name.toLowerCase().includes(searchTerm.toLowerCase()),
+    )
+    setFilteredList(filtered)
+  }, [searchTerm, list])
 
-    const filtered = list?.filter(item =>
-      typeof item.name === 'string' &&
-      item.name.toLowerCase().includes(searchTerm.toLowerCase())
-    );
-    setFilteredList(filtered);
-  }, [searchTerm, list]);
+
+
   useEffect(() => {
     if (valueCheck.length === 0) {
-      switch (type) {
-        case "genres":
-          callbackValue({ genres: [] });
-          break;
-        case "countries":
-          callbackValue({ countries: [] });
-          break;
-        case "year":
-          callbackValue({ year: [] });
-          break;
-        case "type":
-          callbackValue({ type: [] });
-          break;
-        default:
-          break;
-      }
-    } else {
-      switch (type) {
-        case "genres":
-          callbackValue({ genres: valueCheck });
-          break;
-        case "countries":
-          callbackValue({ countries: valueCheck });
-          break;
-        case "year":
-          callbackValue({ year: valueCheck.map((v) => +v) });
-          break;
-        case "type":
-          callbackValue({ type: valueCheck });
-          break;
-        default:
-          break;
-      }
+      callbackValue({ [type]: [] })
+    }  else {
+      callbackValue({ [type]: valueCheck })
     }
-  }, [valueCheck, type, callbackValue]);
-
-
+  }, [valueCheck, type, callbackValue])
 
   return (
-    <Card className={"mb-10 p-5"}>
+    <Card className={"mb-5 p-2"}>
       <Accordion>
         <AccordionItem className={"w-full"} title={title}>
-          <ScrollShadow  orientation="horizontal" className={"max-h-[30vh] h-auto overflow-x-hidden"}>
+          <ScrollShadow
+            orientation="horizontal"
+            className={"max-h-[30vh] h-auto overflow-x-hidden"}
+          >
             <CheckboxGroup
               className={"h-full"}
               value={valueCheck}
               onValueChange={setValueCheck}
             >
-
               <Input
                 type="search"
                 placeholder="Поиск"
                 value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
+                onChange={e => setSearchTerm(e.target.value)}
               />
-
               {filteredList?.map((item, i) => (
                 <CheckboxNext key={i} value={item.name}>
-                  {item.name}
+                  {TypeMovieRu(item.name)}
                 </CheckboxNext>
               ))}
             </CheckboxGroup>
@@ -102,7 +90,7 @@ const Checkbox: React.FC<Props> = ({ list, title, callbackValue, type, resetFilt
         </AccordionItem>
       </Accordion>
     </Card>
-  );
-};
+  )
+}
 
-export default Checkbox;
+export default Checkbox

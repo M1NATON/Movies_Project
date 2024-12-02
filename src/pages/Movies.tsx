@@ -1,124 +1,126 @@
-import React, { useCallback, useEffect, useState, useRef } from "react"
+import React, { useCallback, useEffect, useState, useRef, useMemo } from "react"
 import { moviesApi } from "../app/services/moviesApi"
-import { Button, CircularProgress, Input, Pagination } from "@nextui-org/react"
-import Checkbox from "../components/Checkbox"
-import MovieCard from "../components/MovieCard"
+import {
+  CircularProgress
+} from "@nextui-org/react"
 import { useNavigate, useParams } from "react-router-dom"
 import { getYears } from "../features/getYears"
-import { FiSearch } from "react-icons/fi"
-import { MdClear } from "react-icons/md"
+import MovieList from "../components/movies/MovieList"
+import MoviesPagination from "../components/movies/MoviesPagination"
+import MovieFilters from "../components/movies/MovieFilters"
+import MovieFiltersMobail from "../components/movies/MovieFiltersMobail"
+import { movieStatusApi } from "../app/services/movieStatusApi"
+import { logout } from "../app/slices/UserSlice"
 
 const Movies = () => {
   const { page = "1" } = useParams<{ page?: string }>()
   const navigate = useNavigate()
+  const yearsArray = getYears()
 
-  const [currentPage, setCurrentPage] = useState(page)
-  const [search, setSearch] = useState<string>("")
-  const [pageNumber, setPageNumber] = useState<number>()
-  const [selectedFilters, setSelectedFilters] = useState({
+  const [filters, setFilters] = useState<{
+    page: number;
+    movie: string;
+    year: string[];
+    genres: string[];
+    countries: string[];
+    type: string[];
+  }>({
     page: +page,
-    movie: search,
-    year: [] as number[],
-    genres: [] as string[],
-    countries: [] as string[],
-    type: [] as string[]
+    movie: "",
+    year: [],
+    genres: [],
+    countries: [],
+    type: []
   })
 
+  const [searchQuery, setSearchQuery] = useState("")
+
   const checkboxesRef = useRef<any>([])
+
   const { data: dataGenres } = moviesApi.useAllGenresQuery()
   const { data: dataTypes } = moviesApi.useAllTypesQuery()
   const { data: dataCountry } = moviesApi.useAllCountryQuery()
-  const { data: dataFilter, status } =
-    moviesApi.useFilterMoviesQuery(selectedFilters)
+  const {
+    data: dataFilter,
+    status,
+    refetch
+  } = moviesApi.useFilterMoviesQuery({
+    page: filters.page,
+    movie: filters.movie,
+    year: filters.year.map(Number),
+    genres: filters.genres,
+    countries: filters.countries,
+    type: filters.type,
+  })
 
-  const yearsArray = getYears()
-  const movie = dataFilter?.docs || []
+  const movies = dataFilter?.docs || []
 
-
-  const handlerSearch = () => {
-    setCurrentPage(page)
-    setSelectedFilters(prevFilters => ({
+  const handleSearch = () => {
+    setFilters(prevFilters => ({
       ...prevFilters,
-      page: +page,
-      movie: search,
+      page: 1,
+      movie: searchQuery
     }))
-    setPageNumber(1)
+    navigate("/movies/1")
+  }
+  const handleSearchReset = () => {
+    setSearchQuery("")
+    setFilters({
+      page: 1,
+      movie: "",
+      year: [],
+      genres: [],
+      countries: [],
+      type: []
+    })
+    navigate("/movies/1")
+    refetch()
   }
 
-  const handlerSearchReset = async () => {
-    try {
-      setSearch("")
-      navigate('/movies/1')
-      setCurrentPage('1')
-      setPageNumber(1)
-      handlerSearch()
-    } catch (e) {
-      console.log(e)
-    }
-  }
-
-  const pageHandler = (page: number) => {
-    setCurrentPage(page.toString())
-    setSelectedFilters(prevFilters => ({
+  const handlePageChange = (page: number) => {
+    setFilters(prevFilters => ({
       ...prevFilters,
-      page: page,
-      movie: search,
+      page
     }))
+    navigate(`/movies/${page}`)
     window.scrollTo(0, 0)
   }
 
-  const updateFilters = useCallback((newFilter: any) => {
-    setSelectedFilters(prevFilters => ({
+  const updateFilters = useCallback((newFilter: Partial<typeof filters>) => {
+    setFilters(prevFilters => ({
       ...prevFilters,
-      ...newFilter,
-      page: 1,
+      ...newFilter
     }))
-    setCurrentPage("1")
-    setPageNumber(1)
   }, [])
 
-  const handlerFiltersReset = () => {
-    setSelectedFilters({
+  const handleFiltersReset = () => {
+    setFilters({
       page: 1,
       movie: "",
-      year: [] as number[],
-      genres: [] as string[],
-      countries: [] as string[],
-      type: [] as string[],
+      year: [],
+      genres: [],
+      countries: [],
+      type: []
     })
     checkboxesRef.current.forEach((resetFn: any) => resetFn())
   }
 
   useEffect(() => {
-    setPageNumber(+page)
+    setFilters(prevFilters => ({
+      ...prevFilters,
+      page: +page
+    }))
   }, [page])
 
-  useEffect(() => {
-    navigate(`/movies/${currentPage}`)
-  }, [currentPage, navigate])
-
-  const arrCheckbox = [
-    {
-      type: "genres",
-      title: "Жанры",
-      list: dataGenres,
-    },
-    {
-      type: "countries",
-      title: "Страны",
-      list: dataCountry,
-    },
-    {
-      type: "year",
-      title: "Год",
-      list: yearsArray,
-    },
-    {
-      type: "type",
-      title: "Тип",
-      list: dataTypes,
-    },
-  ]
+  const arrCheckbox = useMemo(
+    () => [
+      { type: "genres", title: "Жанры", list: dataGenres },
+      { type: "countries", title: "Страны", list: dataCountry },
+      { type: "year", title: "Год", list: yearsArray },
+      { type: "type", title: "Тип", list: dataTypes }
+    ],
+    [dataGenres, dataCountry, yearsArray, dataTypes]
+  )
 
   if (!dataGenres || !dataTypes || !dataCountry) {
     return (
@@ -130,122 +132,44 @@ const Movies = () => {
 
   return (
     <div>
-      <div className={"w-full flex gap-20 max-md:flex-col"}>
-        <div className="w-1/4 p-5 max-md:w-full">
-          <h1 className={"text-4xl mb-14"}>Фильтры</h1>
-          <div className={"mb-10"}>
-            <Input
-              type="search"
-              label="Поиск"
-              value={search}
-              onValueChange={setSearch}
-              className={"mb-5"}
-              isInvalid={
-                selectedFilters.genres.length > 0 ||
-                selectedFilters.year.length > 0 ||
-                selectedFilters.countries.length > 0
-              }
-              errorMessage="Сбростье фильтры для поиска"
-              disabled={
-                selectedFilters.genres.length > 0 ||
-                selectedFilters.year.length > 0 ||
-                selectedFilters.countries.length > 0
-              }
-            />
-            <div className={"flex mb-14 justify-between items-center"}>
-              <Button
-                className={""}
-                onClick={handlerSearch}
-                isLoading={status !== "fulfilled"}
-                endContent={<FiSearch />}
-                size="lg"
-                disabled={
-                  selectedFilters.genres.length > 0 ||
-                  selectedFilters.year.length > 0 ||
-                  selectedFilters.countries.length > 0
-                }
-              >
-                Поиск
-              </Button>
-              <Button
-                className={""}
-                onClick={handlerSearchReset}
-                color={"danger"}
-                isLoading={status !== "fulfilled"}
-                endContent={<MdClear />}
-                disabled={
-                  selectedFilters.genres.length > 0 ||
-                  selectedFilters.year.length > 0 ||
-                  selectedFilters.countries.length > 0
-                }
-                size="lg"
-              >
-                Сбросить
-              </Button>
-            </div>
-          </div>
-          {dataGenres &&
-            dataCountry &&
-            yearsArray &&
-            arrCheckbox.map((item, key) => (
-              <Checkbox
-                key={key}
-                callbackValue={updateFilters}
-                type={item.type}
-                title={item.title}
-                list={item.list}
-                resetFilter={(resetFn: () => void) => {
-                  checkboxesRef.current[key] = resetFn
-                }}
-              />
-            ))}
-          <Button
-            className={""}
-            onClick={handlerFiltersReset}
-            color={"danger"}
-            endContent={<MdClear />}
-            size="lg"
-          >
-            Сбросить фильтры
-          </Button>
-        </div>
-        <div className="w-3/4 mx-auto">
-          {dataFilter && status === "fulfilled" ? (
-            <>
-              <h1 className={"text-4xl mb-14"}>Фильмы</h1>
-              <div className={"flex mx-auto flex-wrap gap-5"}>
-                {movie && movie.length > 0 ? (
-                  movie.map((movie, index) => (
-                    <MovieCard
-                      key={index}
-                      title={movie.name}
-                      image={movie.poster?.url}
-                      id={movie.id}
-                    />
-                  ))
-                ) : (
-                  <h1>Нет доступных фильмов</h1>
-                )}
-              </div>
-            </>
-          ) : (
-            <div className={"w-fit mx-auto flex justify-center items-center"}>
-              <CircularProgress size={"lg"} aria-label="Loading..." />
-            </div>
-          )}
-        </div>
-      </div>
-
-      <div key={pageNumber} className="w-fit mx-auto mt-14 mb-14">
-        {status === "fulfilled" && pageNumber && (
-          <Pagination
-            onChange={pageHandler}
-            total={dataFilter?.pages || 0}
-            initialPage={pageNumber !== +page ? 1 : pageNumber}
-            size={"lg"}
+      <div className={"w-full xl:flex-row flex flex-col p-2"}>
+        {window.innerWidth <= 1024 ? (
+          <MovieFiltersMobail
+            filters={filters}
+            setFilters={setFilters}
+            searchQuery={searchQuery}
+            setSearchQuery={setSearchQuery}
+            handleSearch={handleSearch}
+            handleSearchReset={handleSearchReset}
+            updateFilters={updateFilters}
+            handleFiltersReset={handleFiltersReset}
+            arrCheckbox={arrCheckbox}
+            checkboxesRef={checkboxesRef}
+          />
+        ) : (
+          <MovieFilters
+            filters={filters}
+            setFilters={setFilters}
+            searchQuery={searchQuery}
+            setSearchQuery={setSearchQuery}
+            handleSearch={handleSearch}
+            handleSearchReset={handleSearchReset}
+            updateFilters={updateFilters}
+            handleFiltersReset={handleFiltersReset}
+            arrCheckbox={arrCheckbox}
+            checkboxesRef={checkboxesRef}
           />
         )}
+
+        <MovieList movies={movies} status={status} />
       </div>
+
+      <MoviesPagination
+        status={status}
+        handlePageChange={handlePageChange}
+        dataFilter={dataFilter!}
+        filters={filters}
+      />
     </div>
   )
 }

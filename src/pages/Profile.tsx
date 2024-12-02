@@ -20,7 +20,7 @@ const Profile = () => {
     string | undefined
   >()
   const [pageNumber, setPageNumber] = useState<number>()
-  const { data: movie } = movieStatusApi.useGetStatusQuery()
+  const { data: movie, refetch: refetchStatus } = movieStatusApi.useGetStatusQuery()
   const { page = "1" } = useParams<{ page?: string }>()
   const [currentPage, setCurrentPage] = useState(page)
 
@@ -40,6 +40,15 @@ const Profile = () => {
     page: +currentPage,
   })
 
+  const statusHand = () => {
+    refetchStatus()
+  }
+  useEffect(() => {
+    refetchStatus()
+  }, [  ])
+
+
+
   useEffect(() => {
     refetch()
   }, [selectStatusMovie, refetch])
@@ -48,6 +57,8 @@ const Profile = () => {
     setCurrentPage(page.toString())
     window.scrollTo(0, 0)
   }
+
+  console.log('movie', movie)
 
   return (
     <div className="mb-20 gap-5  w-full">
@@ -64,7 +75,9 @@ const Profile = () => {
           <SelectItem key="WATCHED">Просмотрено</SelectItem>
           <SelectItem key="DROPPED">Брошено</SelectItem>
         </Select>
-
+        <Button onClick={statusHand}>
+          status
+        </Button>
       </div>
       <div className="">
         <div className="flex mb-20 justify-center gap-10 flex-wrap ">

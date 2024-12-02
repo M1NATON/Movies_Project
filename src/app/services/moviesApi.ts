@@ -4,7 +4,7 @@ import { Movie, MoviesType } from "../../type/moviesType"
 
 
 
-const apiKinopoisk = '40K1TB2-NY0MFEJ-JHS83AY-AK27YYB'
+const apiKinopoisk = 'SPB2J1Z-BF04PFK-GDQKQYK-CF321SD'
 
 
 //40K1TB2-NY0MFEJ-JHS83AY-AK27YYB

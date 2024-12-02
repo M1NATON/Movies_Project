@@ -1,25 +1,19 @@
 import { useParams } from "react-router-dom"
 import { moviesApi } from "../app/services/moviesApi"
-import {
-  Card,
-  CardBody,
-  CardHeader,
-  Image,
-} from "@nextui-org/react"
-import MovieCard from "../components/MovieCard"
+import { Card, CardBody, CardHeader, Image } from "@nextui-org/react"
 
 import MovieSingleInfo from "../components/movieSingle/MovieSingleInfo"
 import MovieSinglePerson from "../components/movieSingle/MovieSinglePerson"
 import MovieSingleSelect from "../components/movieSingle/MovieSingleSelect"
 import MovieSingleSimilar from "../components/movieSingle/MovieSingleSimilar"
 import MovieSingleWatch from "../components/movieSingle/MovieSingleWatch"
+import MovieSingleSeries from "../components/movieSingle/MovieSingleSeries"
+import MovieSingleTrailer from "../components/movieSingle/MovieSingleTrailer"
 
 const MoviesSingle = () => {
   const { id } = useParams()
 
   const { data } = moviesApi.useGetByIdMovieQuery(+id!)
-
-
   if (!data) return null
   return (
     <div>
@@ -33,7 +27,7 @@ const MoviesSingle = () => {
             className="m-5  object-cover"
           />
         </div>
-        <Card className="text-sm sm:text-xl w-full xl:w-2/3 h-fit p-6">
+        <Card className="text-sm sm:text-xl w-full xl:w-2/3 h-fit p-2 sm:p-6">
           <CardHeader>
             <h1 className={"text-4xl mb-5"}>
               {data.name ? data.name : data.names[0]?.name}
@@ -41,15 +35,21 @@ const MoviesSingle = () => {
           </CardHeader>
           <CardBody>
             <MovieSingleInfo data={data} />
-            <MovieSingleSelect/>
-            <div className="flex gap-10">
+            <MovieSingleSelect />
+            <div className="flex flex-wrap gap-5">
               <MovieSinglePerson data={data} />
-              <MovieSingleWatch id={data?.id} title={data.name}/>
+              {data.videos && data.videos.trailers.length > 0 && (
+                <MovieSingleTrailer data={data} />
+              )}
+              {
+                data!.isSeries && <MovieSingleSeries data={data} />
+              }
             </div>
           </CardBody>
         </Card>
       </div>
-      <MovieSingleSimilar data={data.similarMovies}/>
+      <MovieSingleWatch id={data?.id} title={data.name} />
+      <MovieSingleSimilar data={data.similarMovies} />
     </div>
   )
 }
