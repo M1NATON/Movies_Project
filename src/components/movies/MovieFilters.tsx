@@ -9,6 +9,7 @@ type Filters = {
   genres: string[];
   countries: string[];
   type: string[];
+  lists: string;
 };
 
 type Props = {

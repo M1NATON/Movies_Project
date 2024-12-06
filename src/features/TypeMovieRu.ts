@@ -13,6 +13,5 @@ export const TypeMovieRu = (type: string) => {
       return 'сериал'
     default:
       return type
-      break
   }
 }

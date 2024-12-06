@@ -5,6 +5,7 @@ import MoviesSingle from "../pages/MoviesSingle"
 import Profile from "../pages/Profile"
 import Auth from "../pages/Auth"
 import NotFound from "../components/navbar/NotFound"
+import Home from "../pages/Home"
 
 
 export const router = createBrowserRouter([
@@ -27,6 +28,10 @@ export const router = createBrowserRouter([
       {
         path: 'profile',
         element: <Profile/>
+      },
+      {
+        path: '/:page?',
+        element: <Home/>
       },
       {
         path: '*',

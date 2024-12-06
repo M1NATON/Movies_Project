@@ -12,6 +12,7 @@ type Props = {
     genres: string[]
     countries: string[]
     type: string[]
+    lists: string
   }
 }
 

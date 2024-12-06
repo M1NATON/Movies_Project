@@ -3,7 +3,7 @@ import { Select, SelectItem } from "@nextui-org/react"
 import { movieStatusApi } from "../../app/services/movieStatusApi"
 import { useParams } from "react-router-dom"
 import { useSelector } from "react-redux"
-import { selectUser } from "../../app/slices/UserSlice"
+import { logout, selectUser } from "../../app/slices/UserSlice"
 
 const MovieSingleSelect = () => {
 
@@ -48,13 +48,21 @@ const MovieSingleSelect = () => {
 
   const handlerDeleteStatus = async () => {
     try {
-      await deleteStatus({ id: statusMovie?.id! })
-      setStatusHandler()
-      setStatusMovieSelect(undefined)
+      await deleteStatus({ id: statusMovie?.id! });
+      setStatusMovieSelect(undefined); // Сброс выбранного статуса
     } catch (e) {
-      console.log(e)
+      console.error(e);
     }
-  }
+  };
+
+  useEffect(() => {
+    if (statusMovie) {
+      setStatusMovieSelect(statusMovie.status);
+    } else {
+      setStatusMovieSelect(undefined);
+    }
+  }, [id, statusMovie]);
+
 
   useEffect(() => {
     if (statusMovieSelect) {
@@ -62,44 +70,36 @@ const MovieSingleSelect = () => {
     }
   }, [statusMovieSelect]);
 
-  useEffect(() => {
-    // Обновляем статус фильма при изменении id
-    if (statusMovie) {
-      setStatusMovieSelect(statusMovie.status); // Устанавливаем статус, если он существует
-    } else {
-      setStatusMovieSelect(undefined); // Сбрасываем, если статус не найден
-    }
-  }, [id, statusMovie]);
 
-  console.log('statusMovie',statusMovie)
-
+  console.log('statusMovieSelect', statusMovieSelect)
   return (
     <Select
       isRequired
       placeholder="Выберите статус"
       className="max-w-xs w-full mb-10"
       selectedKeys={
-        statusMovieSelect ? new Set([statusMovieSelect]) : undefined
-      }
-      defaultSelectedKeys={
-        !statusMovieSelect && statusMovie ? new Set([statusMovie.status]) : undefined
+        statusMovieSelect ? new Set([statusMovieSelect]) : new Set()
       }
       onSelectionChange={keys => {
-        const selectedKey = Array.from(keys).join("")
-        setStatusMovieSelect(selectedKey)
+        const selectedKey = Array.from(keys).join("");
+        setStatusMovieSelect(selectedKey);
       }}
     >
       <SelectItem key="PLANED">Буду смотреть</SelectItem>
       <SelectItem key="WATCHED">Просмотрено</SelectItem>
       <SelectItem key="DROPPED">Брошено</SelectItem>
-      <SelectItem
-        color={"danger"}
-        key={"DELETE"}
-        onClick={handlerDeleteStatus}
-      >
-        Удалить
-      </SelectItem>
+      {
+        statusMovieSelect ? <SelectItem
+          color={"danger"}
+          key={"DELETE"}
+          onClick={handlerDeleteStatus}
+        >
+          Удалить
+        </SelectItem> : ''
+      }
+
     </Select>
+
   )
 }
 

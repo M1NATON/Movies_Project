@@ -16,6 +16,7 @@ import { Link, NavLink, useNavigate } from "react-router-dom"
 import RandomMovieNavbar from "./RandomMovieNavbar"
 import { logout, selectIsAuthenticated } from "../../app/slices/UserSlice"
 import { useAppDispatch, useAppSelector } from "../../app/hooks"
+import NavbarSearch from "./NavbarSearch"
 
 const NavbarMobile = () => {
   const { theme, toggleTheme } = useContext(ThemeContext)
@@ -35,12 +36,18 @@ const NavbarMobile = () => {
         <NavbarItem>
           <RandomMovieNavbar />
         </NavbarItem>
+        <NavbarItem>
+          <NavbarSearch/>
+        </NavbarItem>
         <NavbarItem className={"ml-auto"}>
           <Dropdown>
             <DropdownTrigger>
               <Button variant="bordered">Меню</Button>
             </DropdownTrigger>
             <DropdownMenu aria-label="Static Actions">
+              <DropdownItem key="new">
+                <Link to={"/"}>Главная</Link>
+              </DropdownItem>
               <DropdownItem key="new">
                 <Link to={"/movies"}>Фильмы</Link>
               </DropdownItem>

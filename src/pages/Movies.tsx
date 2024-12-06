@@ -24,13 +24,15 @@ const Movies = () => {
     genres: string[];
     countries: string[];
     type: string[];
+    lists: string;
   }>({
     page: +page,
     movie: "",
     year: [],
     genres: [],
     countries: [],
-    type: []
+    type: [],
+    lists: ''
   })
 
   const [searchQuery, setSearchQuery] = useState("")
@@ -51,6 +53,7 @@ const Movies = () => {
     genres: filters.genres,
     countries: filters.countries,
     type: filters.type,
+    lists: ''
   })
 
   const movies = dataFilter?.docs || []
@@ -71,7 +74,8 @@ const Movies = () => {
       year: [],
       genres: [],
       countries: [],
-      type: []
+      type: [],
+      lists: ''
     })
     navigate("/movies/1")
     refetch()
@@ -100,7 +104,8 @@ const Movies = () => {
       year: [],
       genres: [],
       countries: [],
-      type: []
+      type: [],
+      lists: ''
     })
     checkboxesRef.current.forEach((resetFn: any) => resetFn())
   }

@@ -1,5 +1,4 @@
 import { createContext, useState } from "react"
-import { lightLayout } from "@nextui-org/react"
 
 type ThemeContextType = {
   theme: "dark" | "light"

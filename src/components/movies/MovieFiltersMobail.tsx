@@ -19,6 +19,7 @@ type Filters = {
   genres: string[]
   countries: string[]
   type: string[]
+  lists: string
 }
 
 type Props = {
@@ -65,12 +66,6 @@ const MovieFiltersMobail = ({
     onOpen()
   }
 
-  const handleModalClose = (applyChanges: boolean) => {
-    if (applyChanges) {
-      setFilters(temporaryFilters)
-    }
-    onOpenChange()
-  }
 
   return (
     <div className={"mb-10"}>

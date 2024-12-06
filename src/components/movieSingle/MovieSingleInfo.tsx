@@ -13,48 +13,49 @@ const MovieSingleInfo:React.FC<Props> = ({data}) => {
   return (
     <>
       {data?.genres.length > 0 && (
-        <p className={"border-b-1 w-fit"}>
+        <p className={" w-fit"}>
           Жанры: {data.genres.map(genre => genre.name).join(", ")}
         </p>
       )}
       {data?.countries.length > 0 && (
-        <p className={"border-b-1 w-fit mb-4"}>
+        <p className={" w-fit"}>
           Страна производство:{" "}
           {data.countries.map(genre => genre.name).join(", ")}
         </p>
       )}
+      {data.type && (
+        <p className={" w-fit mb-2"}>Тип: {TypeMovieRu(data.type)}</p>
+      )}
+      {data.year && <p className={" w-fit"}>Год: {data.year}</p>}
 
       {data.isSeries &&
         data.releaseYears.map(item => (
-          <p className={"border-b-1 w-fit mb-4"}>
+          <p className={" w-fit "}>
             Сериал выходил с {item.start} по {item.end}
           </p>
         ))}
       {data.ageRating && (
-        <p className={"border-b-1 w-fit mb-4"}>
+        <p className={" w-fit mb-2"}>
           Возрастной рейтинг: {data.ageRating}+
         </p>
       )}
-      {data.year && <p className={"border-b-1 w-fit mb-4"}>Год: {data.year}</p>}
       {data.movieLength && (
-        <p className={"border-b-1 w-fit mb-4"}>
+        <p className={" w-fit"}>
           Продолжительность: {data.movieLength} минут
         </p>
       )}
-      {data.type && (
-        <p className={"border-b-1 w-fit mb-4"}>Тип: {TypeMovieRu(data.type)}</p>
-      )}
+
       {data.rating && (
-        <ul className={"mb-4"}>
+        <ul className={"mb-5"}>
           {data.rating.kp ? (
-            <li className={"border-b-1 w-fit"}>
+            <li className={"w-fit"}>
               Рейтинг кинопоиска: {data.rating.kp.toFixed(1)}/10
             </li>
           ) : (
             ""
           )}
           {data.rating.imdb ? (
-            <li className={"border-b-1 w-fit"}>
+            <li className={" w-fit"}>
               Рейтинг imbd: {data.rating.imdb}/10
             </li>
           ) : (

@@ -3,6 +3,7 @@ import Slider from "react-slick"
 import "slick-carousel/slick/slick.css"
 import "slick-carousel/slick/slick-theme.css"
 import { FaLongArrowAltRight, FaLongArrowAltLeft } from "react-icons/fa"
+import { numScroll } from "../../features/numScroll"
 
 type Props = {
   data: [
@@ -15,15 +16,7 @@ type Props = {
 }
 
 const MovieSingleSimilar: React.FC<Props> = ({ data }) => {
-  const numScroll = () => {
-    if (window.screen.width < 800) {
-      return 1
-    } else if (window.screen.width < 1200) {
-      return 2
-    } else {
-      return 4
-    }
-  }
+
 
   const settings = {
     slidesToShow: numScroll(),
