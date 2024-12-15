@@ -1,34 +1,31 @@
-import React from "react";
-import { Input } from "@nextui-org/react";
-import { FiSearch } from "react-icons/fi";
-import { GrPowerReset } from "react-icons/gr";
+import React from "react"
+import { Input } from "@nextui-org/react"
+import { FiSearch } from "react-icons/fi"
+import { GrPowerReset } from "react-icons/gr"
+import { emptyFilter } from "../../features/emptyFilter"
+import { useMovieFilters } from "../../hooks/useMovieFilters"
 
 type Props = {
-  search: string;
-  setSearch: (value: string) => void;
-  selectedFilters: {
-    genres: string[];
-    year: string[];
-    countries: string[];
-  };
-  handlerSearch: () => void;
-  handlerSearchReset: () => void;
-};
+  search: string
+  setSearch: (value: string) => void
+  handlerSearch: () => void
+  handlerSearchReset: () => void
+}
 
 const MovieSearch = ({
-                       handlerSearch,
-                       handlerSearchReset,
-                       search,
-                       setSearch,
-                       selectedFilters,
-                     }: Props) => {
+  handlerSearch,
+  handlerSearchReset,
+  search,
+  setSearch,
+}: Props) => {
 
+  const {filters} = useMovieFilters(emptyFilter)
 
-  const handleKeyPress = (event: any) => {
-    if(event.key === 'Enter'){
-      handlerSearch()
-    }
-  };
+  const activeFilter =
+    filters.genres!.length > 0 ||
+    filters.year!.length > 0 ||
+    filters.countries!.length > 0
+
 
   return (
     <div className={"flex justify-between items-start gap-2"}>
@@ -38,18 +35,10 @@ const MovieSearch = ({
         value={search}
         onValueChange={setSearch}
         className={"mb-5 h-full"}
-        isInvalid={
-          selectedFilters.genres.length > 0 ||
-          selectedFilters.year.length > 0 ||
-          selectedFilters.countries.length > 0
-        }
-        onKeyPress={handleKeyPress}
+        isInvalid={activeFilter}
+        onKeyPress={(event: any) => event.key === "Enter" && handlerSearch()}
         errorMessage="Сбросьте фильтры для поиска"
-        disabled={
-          selectedFilters.genres.length > 0 ||
-          selectedFilters.year.length > 0 ||
-          selectedFilters.countries.length > 0
-        }
+        disabled={activeFilter}
       />
       <div className="flex justify-between gap-2">
         <button
@@ -70,7 +59,7 @@ const MovieSearch = ({
         </button>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default MovieSearch;
+export default MovieSearch

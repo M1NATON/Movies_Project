@@ -13,13 +13,14 @@ import { FaFilter } from "react-icons/fa"
 import MovieFilters from "./MovieFilters"
 
 type Filters = {
+  lists?: string | undefined
+  year?: number[] | undefined
+  movie?: string | undefined
+  type?: string[] | undefined
   page: number
-  movie: string
-  year: string[]
-  genres: string[]
-  countries: string[]
-  type: string[]
-  lists: string
+  genres?: string[] | undefined
+  countries?: string[] | undefined
+  limit?: string | undefined
 }
 
 type Props = {
@@ -31,18 +32,6 @@ type Props = {
   handleSearchReset: () => void
   updateFilters: (newFilter: Partial<Filters>) => void
   handleFiltersReset: () => void
-  arrCheckbox: (
-    | {
-        type: string
-        title: string
-        list: [{ name: string; slug: string }] | undefined
-      }
-    | {
-        type: string
-        title: string
-        list: { name: string; slug: string }[]
-      }
-  )[]
   checkboxesRef: any
 }
 
@@ -55,7 +44,6 @@ const MovieFiltersMobail = ({
   handleSearchReset,
   updateFilters,
   handleFiltersReset,
-  arrCheckbox,
   checkboxesRef,
 }: Props) => {
   const { isOpen, onOpen, onOpenChange } = useDisclosure()
@@ -66,16 +54,8 @@ const MovieFiltersMobail = ({
     onOpen()
   }
 
-
   return (
     <div className={"mb-10"}>
-      <MovieSearch
-        search={searchQuery}
-        setSearch={setSearchQuery}
-        selectedFilters={filters}
-        handlerSearch={handleSearch}
-        handlerSearchReset={handleSearchReset}
-      />
       <Card className={"w-full text-center p-4 cursor-pointer"}>
         <button
           onClick={handleModalOpen}
@@ -103,11 +83,6 @@ const MovieFiltersMobail = ({
                   handleSearchReset={handleSearchReset}
                   updateFilters={updateFilters}
                   handleFiltersReset={handleFiltersReset}
-                  arrCheckbox={arrCheckbox.map(item => ({
-                    ...item,
-                    selectedValues:
-                      temporaryFilters[item.type as keyof Filters] || [],
-                  }))}
                   checkboxesRef={checkboxesRef}
                 />
               </ModalBody>

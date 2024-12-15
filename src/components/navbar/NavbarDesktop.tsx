@@ -10,11 +10,11 @@ import React, { useContext } from "react"
 import { CiSearch } from "react-icons/ci"
 import NavbarSearch from "./NavbarSearch"
 
-const NavbarDecstop = () => {
+const NavbarDesktop = () => {
   const { theme, toggleTheme } = useContext(ThemeContext)
 
   return (
-    <div className={"flex container mx-auto items-center"}>
+    <div className={"flex container mx-auto py-3 items-center"}>
       <ul className={"flex gap-5 items-center"}>
         <li>
           <RandomMovieNavbar />
@@ -62,4 +62,4 @@ const NavbarDecstop = () => {
   )
 }
 
-export default NavbarDecstop
+export default NavbarDesktop

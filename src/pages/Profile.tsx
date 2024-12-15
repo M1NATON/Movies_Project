@@ -40,14 +40,9 @@ const Profile = () => {
     page: +currentPage,
   })
 
-  const statusHand = () => {
-    refetchStatus()
-  }
   useEffect(() => {
     refetchStatus()
   }, [  ])
-
-
 
   useEffect(() => {
     refetch()
@@ -75,9 +70,6 @@ const Profile = () => {
           <SelectItem key="WATCHED">Просмотрено</SelectItem>
           <SelectItem key="DROPPED">Брошено</SelectItem>
         </Select>
-        <Button onClick={statusHand}>
-          status
-        </Button>
       </div>
       <div className="">
         <div className="flex mb-20 justify-center gap-10 flex-wrap ">
@@ -104,7 +96,7 @@ const Profile = () => {
             <Pagination
               onChange={pageHandler}
               total={myMoviesData?.pages || 1}
-              initialPage={pageNumber !== +page ? 1 : pageNumber}
+              page={pageNumber !== +page ? 1 : pageNumber}
               size={"lg"}
             />
           )}

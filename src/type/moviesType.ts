@@ -23,6 +23,9 @@ export interface Movie {
       end: number
     },
   ]
+  backdrop: {
+    url: string
+  }
   videos: trailers
   seasonsInfo: [
     {

@@ -52,7 +52,7 @@ const NavbarMobile = () => {
                 <Link to={"/movies"}>Фильмы</Link>
               </DropdownItem>
               <DropdownItem key="copy">
-                <Link to={"/movies"}>Обзоры</Link>
+                <Link to={"/review"}>Обзоры</Link>
               </DropdownItem>
               <DropdownItem
                 key="edit"

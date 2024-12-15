@@ -1,60 +1,32 @@
-import React, { useCallback, useEffect, useState, useRef, useMemo } from "react"
-import { moviesApi } from "../app/services/moviesApi"
-import {
-  CircularProgress
-} from "@nextui-org/react"
+import React, { useCallback, useEffect, useState} from "react"
+import { CircularProgress } from "@nextui-org/react"
 import { useNavigate, useParams } from "react-router-dom"
-import { getYears } from "../features/getYears"
 import MovieList from "../components/movies/MovieList"
 import MoviesPagination from "../components/movies/MoviesPagination"
 import MovieFilters from "../components/movies/MovieFilters"
 import MovieFiltersMobail from "../components/movies/MovieFiltersMobail"
-import { movieStatusApi } from "../app/services/movieStatusApi"
-import { logout } from "../app/slices/UserSlice"
+import { useMovieFilters } from "../hooks/useMovieFilters"
+import { useMovieData } from "../hooks/useMovieData"
+import { emptyFilter } from "../features/emptyFilter"
+
 
 const Movies = () => {
   const { page = "1" } = useParams<{ page?: string }>()
   const navigate = useNavigate()
-  const yearsArray = getYears()
-
-  const [filters, setFilters] = useState<{
-    page: number;
-    movie: string;
-    year: string[];
-    genres: string[];
-    countries: string[];
-    type: string[];
-    lists: string;
-  }>({
-    page: +page,
-    movie: "",
-    year: [],
-    genres: [],
-    countries: [],
-    type: [],
-    lists: ''
-  })
-
   const [searchQuery, setSearchQuery] = useState("")
 
-  const checkboxesRef = useRef<any>([])
-
-  const { data: dataGenres } = moviesApi.useAllGenresQuery()
-  const { data: dataTypes } = moviesApi.useAllTypesQuery()
-  const { data: dataCountry } = moviesApi.useAllCountryQuery()
-  const {
-    data: dataFilter,
-    status,
-    refetch
-  } = moviesApi.useFilterMoviesQuery({
+  const { filters,setFilters, updateFilters, resetFilters, checkboxesRef } = useMovieFilters(emptyFilter);
+  const {dataGenres, dataCountry, dataTypes, dataFilter, status, refetchFilter} = useMovieData({
     page: filters.page,
     movie: filters.movie,
-    year: filters.year.map(Number),
+    year: filters?.year?.map(Number),
     genres: filters.genres,
     countries: filters.countries,
     type: filters.type,
-    lists: ''
+    lists: "",
   })
+
+
 
   const movies = dataFilter?.docs || []
 
@@ -62,70 +34,25 @@ const Movies = () => {
     setFilters(prevFilters => ({
       ...prevFilters,
       page: 1,
-      movie: searchQuery
+      movie: searchQuery,
     }))
     navigate("/movies/1")
   }
   const handleSearchReset = () => {
     setSearchQuery("")
-    setFilters({
-      page: 1,
-      movie: "",
-      year: [],
-      genres: [],
-      countries: [],
-      type: [],
-      lists: ''
-    })
+    setFilters(emptyFilter)
     navigate("/movies/1")
-    refetch()
+    refetchFilter()
   }
 
-  const handlePageChange = (page: number) => {
-    setFilters(prevFilters => ({
-      ...prevFilters,
-      page
-    }))
-    navigate(`/movies/${page}`)
-    window.scrollTo(0, 0)
-  }
-
-  const updateFilters = useCallback((newFilter: Partial<typeof filters>) => {
-    setFilters(prevFilters => ({
-      ...prevFilters,
-      ...newFilter
-    }))
-  }, [])
-
-  const handleFiltersReset = () => {
-    setFilters({
-      page: 1,
-      movie: "",
-      year: [],
-      genres: [],
-      countries: [],
-      type: [],
-      lists: ''
-    })
-    checkboxesRef.current.forEach((resetFn: any) => resetFn())
-  }
 
   useEffect(() => {
     setFilters(prevFilters => ({
       ...prevFilters,
-      page: +page
+      page: +page,
     }))
   }, [page])
 
-  const arrCheckbox = useMemo(
-    () => [
-      { type: "genres", title: "Жанры", list: dataGenres },
-      { type: "countries", title: "Страны", list: dataCountry },
-      { type: "year", title: "Год", list: yearsArray },
-      { type: "type", title: "Тип", list: dataTypes }
-    ],
-    [dataGenres, dataCountry, yearsArray, dataTypes]
-  )
 
   if (!dataGenres || !dataTypes || !dataCountry) {
     return (
@@ -137,7 +64,7 @@ const Movies = () => {
 
   return (
     <div>
-      <div className={"w-full xl:flex-row flex flex-col p-2"}>
+      <div className={"w-full xl:flex-row flex items-start flex-col p-2"}>
         {window.innerWidth <= 1024 ? (
           <MovieFiltersMobail
             filters={filters}
@@ -147,21 +74,18 @@ const Movies = () => {
             handleSearch={handleSearch}
             handleSearchReset={handleSearchReset}
             updateFilters={updateFilters}
-            handleFiltersReset={handleFiltersReset}
-            arrCheckbox={arrCheckbox}
+            handleFiltersReset={resetFilters}
             checkboxesRef={checkboxesRef}
           />
         ) : (
           <MovieFilters
-            filters={filters}
             setFilters={setFilters}
             searchQuery={searchQuery}
             setSearchQuery={setSearchQuery}
             handleSearch={handleSearch}
             handleSearchReset={handleSearchReset}
             updateFilters={updateFilters}
-            handleFiltersReset={handleFiltersReset}
-            arrCheckbox={arrCheckbox}
+            handleFiltersReset={resetFilters}
             checkboxesRef={checkboxesRef}
           />
         )}
@@ -171,9 +95,11 @@ const Movies = () => {
 
       <MoviesPagination
         status={status}
-        handlePageChange={handlePageChange}
+        type={'/movies'}
+        pageTwo={dataFilter?.page || 1}
+        setFilters={setFilters}
         dataFilter={dataFilter!}
-        filters={filters}
+        size={"lg"}
       />
     </div>
   )

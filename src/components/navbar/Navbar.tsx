@@ -1,5 +1,5 @@
 import NavbarMobile from "./NavbarMobile"
-import NavbarDecstop from "./NavbarDecstop"
+import NavbarDesktop from "./NavbarDesktop"
 
 const Navbar = () => {
 
@@ -9,7 +9,7 @@ const Navbar = () => {
         window.screen.width < 1000 ? (
           <NavbarMobile/>
         ) : (
-          <NavbarDecstop/>
+          <NavbarDesktop/>
         )
       }
     </>

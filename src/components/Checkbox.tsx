@@ -15,10 +15,10 @@ type Props = {
   type: string
   list?: { name: string; slug: string }[]
   callbackValue: (data: {
-    year?: string[]
-    genres?: string[]
-    type?: string[]
-    countries?: string[]
+    year?: string[] | undefined
+    genres?: string[] | undefined
+    type?: string[] | undefined
+    countries?: string[] | undefined
   }) => void
   resetFilter: (resetFn: () => void) => void
   selectedValues: string[]
