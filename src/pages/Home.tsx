@@ -11,7 +11,7 @@ const Home = () => {
   const [filters, setFilters] = useState<FiltersType>({
     ...emptyFilter,
     lists: "top250",
-    limit: "4",
+    limit: "3",
   })
 
   const { data: dataTop, status: statusTop } =

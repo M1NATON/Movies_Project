@@ -1,10 +1,6 @@
-import React from "react"
 import {
-  Button,
   Card,
-  CardBody,
   CardFooter,
-  CardHeader,
   Image,
 } from "@nextui-org/react"
 import { Link } from "react-router-dom"

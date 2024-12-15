@@ -20,7 +20,7 @@ import MovieCard from "../MovieCard"
 import Slider from "react-slick"
 
 const NavbarSearch = () => {
-  const { isOpen, onOpen, onOpenChange } = useDisclosure()
+  const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure()
   const { page = "1" } = useParams<{ page?: string }>()
   const [invis, setInvis] = useState<boolean>(false)
   const { theme } = useContext(ThemeContext)
@@ -59,6 +59,7 @@ const NavbarSearch = () => {
     }
   }
 
+
   const numScroll = () => {
     if (window.screen.width < 800) {
       return 1
@@ -79,7 +80,6 @@ const NavbarSearch = () => {
 
   useEffect(() => {
     handlerSearchReset()
-    console.log('123124')
   }, [isOpen])
 
   return (
