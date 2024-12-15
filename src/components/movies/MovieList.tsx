@@ -14,7 +14,7 @@ const MovieList = ({status, movies}:Props) => {
     <div className="xl:w-3/4 w-full mx-auto">
       {status === "fulfilled" ? (
         <>
-          <h1 className={"text-4xl mb-14"}>Фильмы</h1>
+          <h1 className={"text-4xl mb-14 pl-11"}>Фильмы</h1>
           <div className={"flex mx-auto flex-wrap gap-5"}>
             {movies.length > 0 ? (
               movies.map((movie, index) => (

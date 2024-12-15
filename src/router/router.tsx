@@ -6,37 +6,41 @@ import Profile from "../pages/Profile"
 import Auth from "../pages/Auth"
 import NotFound from "../components/navbar/NotFound"
 import Home from "../pages/Home"
-
+import ReviewsPage from "../pages/ReviewsPage"
 
 export const router = createBrowserRouter([
   {
-    path: 'auth',
-    element: <Auth/>
+    path: "auth",
+    element: <Auth />,
   },
   {
-    path: '/',
-    element: <Layout/>,
+    path: "/",
+    element: <Layout />,
     children: [
       {
-        path: 'movies/:page?',
-        element: <Movies/>
+        path: "movies/:page?",
+        element: <Movies />,
       },
       {
-        path: 'movie/:id?',
-        element: <MoviesSingle/>
+        path: "movie/:id?",
+        element: <MoviesSingle />,
       },
       {
-        path: 'profile',
-        element: <Profile/>
+        path: "profile",
+        element: <Profile />,
       },
       {
-        path: '/:page?',
-        element: <Home/>
+        path: "/",
+        element: <Home />,
       },
       {
-        path: '*',
-        element: <NotFound />
-      }
-    ]
-  }
+        path: "review/:page?",
+        element: <ReviewsPage />,
+      },
+      {
+        path: "*",
+        element: <NotFound />,
+      },
+    ],
+  },
 ])

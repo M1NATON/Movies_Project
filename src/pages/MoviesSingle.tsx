@@ -15,19 +15,28 @@ const MoviesSingle = () => {
 
   const { data } = moviesApi.useGetByIdMovieQuery(+id!)
   if (!data) return null
+
+  const imageBack = () => {
+    if(window.screen.width >=800 && window.screen.width <= 1200) {
+      return data.backdrop.url
+    } else {
+      return data.poster.url
+    }
+  }
+
   return (
     <div>
-      <div className="w-full flex-col h-1/2 xl:flex mx-auto mb-16 gap-40 md:flex-row">
+      <div className="w-full z-20 flex-col h-1/2  xl:flex gap-40 mx-auto mb-16  md:flex-row">
         <div className="flex xl:w-1/3 w-[90%] md:mx-auto  flex-col items-center justify-center">
           <Image
             isBlurred
-            src={`${data.poster.url}`}
+            src={`${imageBack()}`}
             alt="NextUI Album Cover"
             aria-label={"NextUI Album Cover"}
-            className="m-5  object-cover"
+            className="m-5 object-cover"
           />
         </div>
-        <Card className="text-sm sm:text-xl w-full xl:w-2/3 h-fit p-2 sm:p-6">
+        <Card className="text-sm z-20 sm:text-xl w-full xl:w-2/3 h-fit p-2 sm:p-6">
           <CardHeader>
             <h1 className={"text-4xl mb-5"}>
               {data.name ? data.name : data.names[0]?.name}

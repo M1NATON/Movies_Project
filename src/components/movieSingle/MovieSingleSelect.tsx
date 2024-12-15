@@ -95,7 +95,7 @@ const MovieSingleSelect = () => {
           onClick={handlerDeleteStatus}
         >
           Удалить
-        </SelectItem> : ''
+        </SelectItem> : <SelectItem key={''}></SelectItem>
       }
 
     </Select>
