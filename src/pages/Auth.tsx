@@ -6,7 +6,7 @@ import Register from "../components/auth/Register"
 const Auth = () => {
 
   const [selected, setSelected] = useState<string>("login")
-
+//123
   return (
     <div className={"flex items-center justify-center h-screen"}>
       <div className="flex flex-col ">
