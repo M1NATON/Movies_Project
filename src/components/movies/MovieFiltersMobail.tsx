@@ -75,7 +75,6 @@ const MovieFiltersMobail = ({
             <>
               <ModalBody>
                 <MovieFilters
-                  filters={temporaryFilters}
                   setFilters={setFilters}
                   searchQuery={searchQuery}
                   setSearchQuery={setSearchQuery}

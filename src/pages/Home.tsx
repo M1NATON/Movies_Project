@@ -4,8 +4,7 @@ import { FiltersType } from "../type/filtersType"
 import { emptyFilter } from "../features/emptyFilter"
 import HomeList from "../components/home/HomeList"
 
-import backImg from "../../img/topBackImg.jpg"
-import { Card, Image } from "@nextui-org/react"
+import { Image } from "@nextui-org/react"
 
 const Home = () => {
   const [filters, setFilters] = useState<FiltersType>({

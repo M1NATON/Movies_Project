@@ -2,7 +2,7 @@
 
 export interface ReviewType {
   id?: string;
-  user_id: string;
+  user_id?: string;
   movie_id: number
   description?: string;
   rating: number;

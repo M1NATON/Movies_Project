@@ -87,18 +87,18 @@ const MovieSingleInfo: React.FC<Props> = ({ data }) => {
       )}
 
         <p className={'w-full mb-5 flex gap-5 items-end'}>
-          <Slider
-            className="max-w-md"
-            onChange={setRating}
-            value={rating}
-            defaultValue={0}
-            label="Оценка"
-            maxValue={10}
-            minValue={0}
-            showSteps={true}
-            size="lg"
-            step={1}
-          />
+          {/*<Slider*/}
+          {/*  className="max-w-md"*/}
+          {/*  onChange={setRating}*/}
+          {/*  value={rating}*/}
+          {/*  defaultValue={0}*/}
+          {/*  label="Оценка"*/}
+          {/*  maxValue={10}*/}
+          {/*  minValue={0}*/}
+          {/*  showSteps={true}*/}
+          {/*  size="lg"*/}
+          {/*  step={1}*/}
+          {/*/>*/}
           <button onClick={handleRating}>
             <GiConfirmed size={40} color={'#006fee'}/>
           </button>
