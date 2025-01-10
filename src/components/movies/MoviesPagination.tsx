@@ -33,7 +33,7 @@ const MoviesPagination = ({
     if (type) {
       navigate(`${type}/${page}`)
     }
-    window.scrollTo(0, 0)
+    // window.scrollTo(0, 0)
   }
 
   useEffect(() => {

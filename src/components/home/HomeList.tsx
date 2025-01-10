@@ -23,11 +23,11 @@ const HomeList = ({data, status, setFilters, title}: Props) => {
           <h1 className={"text-4xl"}>{title}</h1>
           <p className={"text-white/40"}>По версии Кинопоиска.</p>
         </div>
-        {status === "pending" ? (
-          <div className={"w-fit mx-auto flex justify-center items-center"}>
-            <CircularProgress size={"lg"} aria-label="Loading..." />
-          </div>
-        ) : (
+        {/*{status === "pending" ? (*/}
+        {/*  <div className={"w-fit mx-auto flex justify-center items-center"}>*/}
+        {/*    <CircularProgress size={"lg"} aria-label="Loading..." />*/}
+        {/*  </div>*/}
+        {/*) : (*/}
           <div className="flex items-center flex-wrap gap-5">
             {data?.docs?.map(item => (
               <MovieCard
@@ -38,7 +38,7 @@ const HomeList = ({data, status, setFilters, title}: Props) => {
               />
             ))}
           </div>
-        )}
+        {/*)}*/}
         <MoviesPagination
           type={''}
           pageTwo={data?.page || 1}

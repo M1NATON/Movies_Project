@@ -64,7 +64,7 @@ const Movies = () => {
 
   return (
     <div>
-      <div className={"w-full xl:flex-row flex items-start flex-col p-2"}>
+      <div className={"w-full xl:flex-row gap-2 flex items-start flex-col p-2"}>
         {window.innerWidth <= 1024 ? (
           <MovieFiltersMobail
             filters={filters}
