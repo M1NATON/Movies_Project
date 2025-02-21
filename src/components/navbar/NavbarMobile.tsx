@@ -69,7 +69,7 @@ const NavbarMobile = () => {
                   </span>
                 )}
               </DropdownItem>
-              <DropdownItem>
+              <DropdownItem key={'profile'}>
                 {auth && <NavLink to={"/profile"}>Личный кабинет</NavLink>}
               </DropdownItem>
               <DropdownItem
@@ -80,7 +80,7 @@ const NavbarMobile = () => {
               >
                 {auth && <span>Выйти</span>}
               </DropdownItem>
-              <DropdownItem>
+              <DropdownItem key={'auth'}>
                 {!auth && (
                   <NavLink to={"/auth"}>
                     Войти
