@@ -44,7 +44,7 @@ const MoviesSingle = () => {
           </CardHeader>
           <CardBody>
             <MovieSingleInfo data={data} />
-            <MovieSingleSelect />
+            {/*<MovieSingleSelect />*/}
             <div className="flex flex-wrap gap-5">
               <MovieSinglePerson data={data} />
               {data.videos && data.videos.trailers.length > 0 && (
@@ -58,7 +58,7 @@ const MoviesSingle = () => {
         </Card>
       </div>
       <MovieSingleWatch id={data?.id} title={data.name} />
-      <MovieSingleSimilar data={data.similarMovies} />
+      {/*<MovieSingleSimilar data={data.similarMovies} />*/}
     </div>
   )
 }

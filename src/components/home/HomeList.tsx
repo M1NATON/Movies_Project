@@ -1,9 +1,8 @@
-import React from "react"
 import { Card, CircularProgress } from "@nextui-org/react"
 import MovieCard from "../MovieCard"
 import MoviesPagination from "../movies/MoviesPagination"
-import { MoviesType } from "../../type/moviesType"
-import { FiltersType } from "../../type/filtersType"
+import type { MoviesType } from "../../type/moviesType"
+import type { FiltersType } from "../../type/filtersType"
 
 
 type Props = {

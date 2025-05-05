@@ -1,6 +1,6 @@
 import { createApi } from "@reduxjs/toolkit/query/react"
 import { fetchBaseQuery } from "@reduxjs/toolkit/query"
-import { Movie, MoviesType } from "../../type/moviesType"
+import type { Movie, MoviesType } from "../../type/moviesType"
 import { FiltersType } from "../../type/filtersType"
 
 const apiKinopoisk = "SPB2J1Z-BF04PFK-GDQKQYK-CF321SD"

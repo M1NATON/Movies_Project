@@ -18,7 +18,7 @@ const MovieSingleWatch: React.FC<Props> = ({ id, title }) => {
   const { isOpen, onOpen, onOpenChange } = useDisclosure()
 
   return (
-    <Card className={'mb-20'}>
+    <Card className={'mb-20 z-10'}>
       <KinoboxPlayer kpId={id} />
     </Card>
   )

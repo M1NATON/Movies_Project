@@ -18,8 +18,18 @@ import { useNavigate, useParams } from "react-router-dom"
 import { moviesApi } from "../../app/services/moviesApi"
 import MovieCard from "../MovieCard"
 import Slider from "react-slick"
+import { div } from "framer-motion/client"
+
+
+type Props = {
+  closeModal: () => void
+}
+
 
 const NavbarSearch = () => {
+
+
+
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure()
   const { page = "1" } = useParams<{ page?: string }>()
   const [invis, setInvis] = useState<boolean>(false)
@@ -133,11 +143,14 @@ const NavbarSearch = () => {
                         <Slider {...settings}>
                           {
                             dataFilter?.docs.map(item => (
-                              <MovieCard
-                                title={item.name}
-                                image={item.poster.url}
-                                id={item.id}
-                              />
+                              <div onClick={onClose}>
+                                <MovieCard
+                                  
+                                  title={item.name}
+                                  image={item.poster.url}
+                                  id={item.id}
+                                />
+                              </div> 
                             ))
                           }
                         </Slider>
@@ -150,11 +163,6 @@ const NavbarSearch = () => {
                 }
 
               </ModalBody>
-              <ModalFooter>
-                <Button color="danger" variant="light" onPress={onClose}>
-                  Закрыть
-                </Button>
-              </ModalFooter>
             </>
           )}
         </ModalContent>

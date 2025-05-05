@@ -8,6 +8,7 @@ import { RouterProvider } from "react-router-dom"
 import { router } from "./router/router"
 import { store } from "./app/store"
 import { Provider } from "react-redux"
+import StartParamHandler from "./components/StartParamHandler"
 
 const container = document.getElementById("root")
 

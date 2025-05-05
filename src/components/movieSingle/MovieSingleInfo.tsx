@@ -1,11 +1,6 @@
-import React, { useState } from "react"
-import { Movie } from "../../type/moviesType"
+
 import { TypeMovieRu } from "../../features/TypeMovieRu"
-import {Slider} from "@nextui-org/react";
-import { GiConfirmed } from "react-icons/gi";
-import { reviewApi } from "../../app/services/reviewApi"
-import { useSelector } from "react-redux"
-import { selectUser } from "../../app/slices/UserSlice"
+import type { Movie } from "../../type/moviesType"
 
 
 type Props = {
@@ -13,26 +8,6 @@ type Props = {
 }
 
 const MovieSingleInfo: React.FC<Props> = ({ data }) => {
-
-  const [rating, setRating] = useState(0)
-  const user = useSelector(selectUser)
-  const [createReview] = reviewApi.useCreateReviewsMutation()
-
-  const handleRating = () => {
-    try {
-      createReview({
-        user_id: user?.id,
-        movie_id: data.id,
-        rating: rating,
-        description: ''
-      })
-    } catch (e) {
-      console.log(e)
-    }
-
-  }
-
-
 
 
   return (
@@ -85,24 +60,6 @@ const MovieSingleInfo: React.FC<Props> = ({ data }) => {
       {data.description && (
         <p className={"mb-5"}>Описание: {data.description}</p>
       )}
-
-        <p className={'w-full mb-5 flex gap-5 items-end'}>
-          {/*<Slider*/}
-          {/*  className="max-w-md"*/}
-          {/*  onChange={setRating}*/}
-          {/*  value={rating}*/}
-          {/*  defaultValue={0}*/}
-          {/*  label="Оценка"*/}
-          {/*  maxValue={10}*/}
-          {/*  minValue={0}*/}
-          {/*  showSteps={true}*/}
-          {/*  size="lg"*/}
-          {/*  step={1}*/}
-          {/*/>*/}
-          <button onClick={handleRating}>
-            <GiConfirmed size={40} color={'#006fee'}/>
-          </button>
-        </p>
     </>
   )
 }

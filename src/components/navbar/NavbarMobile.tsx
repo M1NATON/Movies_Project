@@ -32,14 +32,44 @@ const NavbarMobile = () => {
 
   return (
     <Navbar>
-      <NavbarContent className={"flex justify-between items-center"}>
+      <NavbarContent className={"flex justify-end items-center"}>
+
         <NavbarItem>
           <RandomMovieNavbar />
         </NavbarItem>
+
         <NavbarItem>
-          <NavbarSearch/>
+          <NavbarSearch />
         </NavbarItem>
-        <NavbarItem className={"ml-auto"}>
+      </NavbarContent>
+    </Navbar>
+  )
+}
+
+export default NavbarMobile
+
+// {auth ? (
+//   <>
+//     <DropdownItem></DropdownItem>
+//     <DropdownItem
+//       key="delete"
+//       className="text-danger"
+//       onClick={handlerLogout}
+//       color="danger"
+//     >
+//       Выйти
+//     </DropdownItem>
+//   </>
+// ) : (
+//   <DropdownItem>
+//     <NavLink to={"/auth"} className={"text-2xl"}>
+//       <Button>Войти</Button>
+//     </NavLink>
+//   </DropdownItem>
+// )}
+
+{
+  /* <NavbarItem className={"ml-auto"}>
           <Dropdown>
             <DropdownTrigger>
               <Button variant="bordered">Меню</Button>
@@ -89,30 +119,5 @@ const NavbarMobile = () => {
               </DropdownItem>
             </DropdownMenu>
           </Dropdown>
-        </NavbarItem>
-      </NavbarContent>
-    </Navbar>
-  )
+        </NavbarItem> */
 }
-
-export default NavbarMobile
-
-// {auth ? (
-//   <>
-//     <DropdownItem></DropdownItem>
-//     <DropdownItem
-//       key="delete"
-//       className="text-danger"
-//       onClick={handlerLogout}
-//       color="danger"
-//     >
-//       Выйти
-//     </DropdownItem>
-//   </>
-// ) : (
-//   <DropdownItem>
-//     <NavLink to={"/auth"} className={"text-2xl"}>
-//       <Button>Войти</Button>
-//     </NavLink>
-//   </DropdownItem>
-// )}

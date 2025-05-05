@@ -4,6 +4,7 @@ import Navbar from "../components/navbar/Navbar";
 import { useSelector } from "react-redux";
 import { selectIsAuthenticated } from "../app/slices/UserSlice";
 import { movieStatusApi } from "../app/services/movieStatusApi";
+import StartParamHandler from "../components/StartParamHandler"
 
 type ErrorData = {
   message?: string;
@@ -36,6 +37,7 @@ const Layout = () => {
   return (
     <div className={"flex min-h-[100vh] flex-col text-foreground"}>
       <Navbar />
+      <StartParamHandler />
       <div className="flex-grow container mx-auto mt-20">
         <Outlet />
       </div>
